@@ -35,6 +35,25 @@ const signin = (props) => {
     message.error({ content: "กรุณากรอกข้อมูลให้ครบถ้วน" });
   };
 
+  const guestUser = async () => {
+    try {
+      let result = await axios.get("http://localhost:4000/api/guestuser")
+      let signin = await axios.post("http://localhost:4000/api/login",{
+        username: result.data.username,
+        password: "123456"
+      },
+      {
+        withCredentials: true,
+      })
+      if (signin.status == 200) {
+        route.push('/')
+      }
+    }
+    catch (e) {
+      message.error({ content: "มีข้อผิดพลาด กรุณาลองใหม่อีกครั้ง" });
+    }
+  }
+
   return (
     <Wrapped>
       <div className="container">
@@ -48,7 +67,7 @@ const signin = (props) => {
                 remember: true,
               }}
               onFinish={handleSignin}
-              onFinishFailed={onSigninFailed}
+              onFinishFailed={onSigninFailed} 
             >
               <Form.Item
                 name="username"
@@ -85,7 +104,7 @@ const signin = (props) => {
                 </Form.Item>
                 <Divider className="divider" />
                 <Form.Item>
-                  <Button htmlType="submit" className="btn-component">
+                  <Button onClick={() => guestUser()} className="btn-component">
                     Guest Sign in
                   </Button>
                 </Form.Item>
