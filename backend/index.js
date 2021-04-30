@@ -21,7 +21,7 @@ router.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res, next) => {
   return res.send(`Status server is running ✅`);
-})
+});
 
 router.post("/login", (req, res, next) => {
   passport.authenticate("local", { session: false }, (err, user, info) => {
@@ -95,5 +95,72 @@ router.get(
     res.send(req.user);
   }
 );
+
+router.get("/findmenu", async (req, res) => {
+  let found = await db.findallMenu();
+  return res.send(found);
+});
+
+router.post(
+  "/addmenu",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res, next) => {
+    if (!req.user) {
+      console.log(req.user);
+    } else {
+      let result = await db.addMenu(req.body, req.user.username);
+      return res.send(result);
+    }
+  }
+);
+
+router.put("/editmenu", async (req, res) => {
+  let found = await db.editMenu(req.body);
+  if (found) {
+    return res.status(200).send(found);
+  }
+  return res
+    .status(500)
+    .send({ message: `Not found calID ${req.params.calID}` });
+});
+
+router.delete("/delete/:calID", async (req, res) => {
+  let found = await db.deletecalID(req.params.calID);
+  if (found) {
+    return res.status(200).send(found);
+  }
+  return res
+    .status(500)
+    .send({ message: `Not found calID ${req.params.calID}` });
+});
+
+router.get("/guestuser", async (req, res, next) => {
+  try {
+    const SALT_ROUND = 10;
+    let username = Math.random().toString(36).substring(2);
+    let emailText = "@guest.mail";
+    let email = username.concat(emailText);
+    let password = "123456";
+    if (!username || !email || !password)
+      return res.json({ message: "Cannot register with empty string" });
+    if (db.checkExistingUser(username) !== db.NOT_FOUND)
+      return res.json({ message: "Duplicated user" });
+
+    let id = users.users.length
+      ? users.users[users.users.length - 1].id + 1
+      : 1;
+    hash = await bcrypt.hash(password, SALT_ROUND);
+    users.users.push({ id, username, password: hash, email });
+    res.status(200).json({ message: "Register success", username: username });
+  } catch {
+    res.status(422).json({ message: "Cannot register" });
+  }
+});
+
+router.post("/calculator", async (req, res, next) => {
+    let result = await db.addcalculator(req.body);
+    return res.send(result);
+
+});
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));
