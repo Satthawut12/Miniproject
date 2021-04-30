@@ -4,15 +4,15 @@ let users = {
   users: [
     {
       id: 1,
-      username: "wongthawee",
+      username: "Satthawut",
       password: "$2b$10$0AsMSQaUB0AlLnKzgeUOfOE.hWUodtuR4NOU954XLVy2gy3lBWsdO",
-      email: "wongthawee@gmail.com",
+      email: "satthawut@gmail.com",
     },
     {
       id: 2,
-      username: "test",
+      username: "Mean",
       password: "$2b$10$0AsMSQaUB0AlLnKzgeUOfOE.hWUodtuR4NOU954XLVy2gy3lBWsdO",
-      email: "test@gmail.com",
+      email: "Mean@gmail.com",
     },
   ],
 };
