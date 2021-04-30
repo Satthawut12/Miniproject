@@ -47,7 +47,30 @@ export const Container = styled.div`
 
   .btn-signout:hover {
     background-color: #f1a837;
-    color:black;
-    font-weight:bold;
+    color: black;
+    font-weight: bold;
+  }
+`;
+
+export const ListContainer = styled.div`
+  .containerList {
+  }
+  .grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    background-color: #fff;
+    padding: 10px;
+    max-width: 400px;
+  }
+  .grid-item {
+    /* background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8); */
+    padding: 20px;
+    font-size: 1rem;
+    text-align: left;
+  }
+  h1 {
+    width: 340px;
+    text-align: center;
   }
 `;

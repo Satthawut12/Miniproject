@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { Container } from "./styled";
+import Link from 'next/link'
 
 const Header = () => {
   const route = useRouter();
@@ -19,15 +20,19 @@ const Header = () => {
   return (
     <Container>
       <div className="header-menu">
-        <div className="title">Header</div>
+        <div className="title">Calories</div>
         <div className="menu">
-          <div className="sub-menu">Home</div>
-          <div className="sub-menu">Profile</div>
-          <div className="sub-menu">About</div>
-          <div className="sub-menu">Contact</div>
+          <Link href="/">
+            <div className="sub-menu">หน้าหลัก</div>
+          </Link>
+          <Link href="/manage">
+            <div className="sub-menu">จัดการข้อมูล</div>
+          </Link>
         </div>
       </div>
-      <div className="btn-signout" onClick={()=> handleSignOut()}>Sign Out</div>
+      <div className="btn-signout" onClick={() => handleSignOut()}>
+        ออกจากระบบ
+      </div>
     </Container>
   );
 };
