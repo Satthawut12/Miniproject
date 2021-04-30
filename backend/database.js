@@ -8,12 +8,6 @@ let users = {
       password: "$2b$10$0AsMSQaUB0AlLnKzgeUOfOE.hWUodtuR4NOU954XLVy2gy3lBWsdO",
       email: "satthawut@gmail.com",
     },
-    {
-      id: 2,
-      username: "Mean",
-      password: "$2b$10$0AsMSQaUB0AlLnKzgeUOfOE.hWUodtuR4NOU954XLVy2gy3lBWsdO",
-      email: "Mean@gmail.com",
-    },
   ],
 };
 
