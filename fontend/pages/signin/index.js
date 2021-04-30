@@ -19,6 +19,7 @@ const signin = (props) => {
     if (result.status == 200) {
       route.push('/')
     }
+    else alert("รหัสผ่านหรือผู้ใช้ไม่ถูกต้อง")
   };
 
   const handleSignUp = async (values) => {

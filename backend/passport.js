@@ -15,6 +15,7 @@ passport.use(
         passwordField: 'password'
     }, async (username, password, cb) => {
         const index = db.checkExistingUser(username)
+        console.log("index: ",index);
         if (index !== db.NOT_FOUND && await db.isValidUser(username, password)) {
             const { id, username, email } = users.users[index]
             return cb(null,

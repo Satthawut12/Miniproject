@@ -160,7 +160,26 @@ router.get("/guestuser", async (req, res, next) => {
 router.post("/calculator", async (req, res, next) => {
     let result = await db.addcalculator(req.body);
     return res.send(result);
+});
 
+router.get("/total", async (req, res) => {
+    let result = await db.calculator();
+    return res.json({ caltotal: result});
+});
+
+router.delete("/calculator/delete/:calculatorID", async (req, res) => {
+  let found = await db.deletecalculateID(req.params.calculatorID);
+  if (found) {
+    return res.status(200).send(found);
+  }
+  return res
+    .status(500)
+    .send({ message: `Not found calculatorID ${req.params.calculatorID}` });
+});
+
+router.get("/list", async (req, res) => {
+  let result = await db.getAllcalculate();
+  return res.send(result)
 });
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));

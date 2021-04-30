@@ -9,32 +9,72 @@ import axios from "axios";
 
 const Index = (props) => {
   const [data, setData] = useState([]);
+  const [dataTorecord, setDataTorecord] = useState([]);
+  const [total, setTotal] = useState(0)
   useEffect(() => {
     fetch();
+    getTotalcal();
   }, []);
 
   const fetch = async () => {
     try {
       let result = await axios.get("http://localhost:4000/api/findmenu");
       setData(result.data);
+      let found  = await axios.get("http://localhost:4000/api/list")
+      setDataTorecord(found.data)
     } catch (e) {
       console.log(e);
     }
   };
 
   const select = async (calID, menuName, totalCal) => {
-    console.log(calID, menuName, totalCal);
+    //console.log(calID, menuName, totalCal);
     try {
       let result = await axios.post("http://localhost:4000/api/calculator", {
         menuName: menuName,
         totalCal: totalCal
       })
-      console.log(result);
+      if(result.status === 200){
+        console.log(result.data);
+        setDataTorecord(result.data.calculator)
+      }
     } 
     catch (e) {
       console.log(e);
     }
+    finally {
+      await getTotalcal()
+    }
   };
+
+  const deleteCalculatorID = async (calculatorID) => {
+    //console.log(calculatorID);
+    try {
+      let result = await axios.delete(`http://localhost:4000/api/calculator/delete/${calculatorID}`)
+      //console.log(result.data);
+      setDataTorecord(result.data)
+    }
+    catch (e) {
+      console.log(e);
+    }
+    finally {
+      await getTotalcal()
+    }
+  }
+
+  const getTotalcal = async () => {
+    try {
+      let result = await axios.get("http://localhost:4000/api/total")
+      if(result.status === 200){
+        console.log(result.data);
+        setTotal(result.data.caltotal)
+      }
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+
 
   return (
     <Layout>
@@ -44,10 +84,10 @@ const Index = (props) => {
             <List btn={true} data={data} select={select}/>
           </div>
           <div>
-            <List btn={false}  />
+            <List btn={false}  data={dataTorecord} deleteCalId={deleteCalculatorID}/>
           </div>
           <div>
-            <Totalcal />
+            <Totalcal totalCal={total} />
           </div>
         </div>
       </Container>

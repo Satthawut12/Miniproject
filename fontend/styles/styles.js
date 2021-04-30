@@ -4,6 +4,6 @@ export const Container = styled.div`
   .box-container {
     display: flex;
     justify-content: space-around;
-    align-items: center;
+    align-items: flex-start;
   }
 `;

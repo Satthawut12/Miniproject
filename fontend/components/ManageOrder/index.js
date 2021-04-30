@@ -1,12 +1,13 @@
-import { ListContainer } from "./styled";
+import { ListContainer } from "./styles";
 import axios from "axios";
 import { Button } from "antd";
 import React, { useEffect, useState } from "react";
-const List = (props) => {
-  const { btn, data, select, deleteCalId } = props;
+
+const ManageOrder = (props) => {
+  const { btn, data, editMenu, deletecalID } = props;
   return (
     <ListContainer>
-      <h1>{btn ? "รายการ" : "บันทึก"}</h1>
+      <h1>{btn ? "รายการ" : ""}</h1>
       <div className="containerList">
         <div className="grid-container">
           <div className="grid-item">ชื่อรายการ</div>
@@ -19,25 +20,27 @@ const List = (props) => {
                 <div className="grid-item">{item?.totalCal}</div>
                 <div className="grid-item">
                   {btn && (
-                    <Button
-                      type="primary"
-                      onClick={() =>
-                        select(item?.calID, item?.menuName, item?.totalCal)
-                      }
-                    >
-                      เลือก
-                    </Button>
+                    <div>
+                      <Button
+                        type="primary"
+                        onClick={() =>
+                          editMenu(item?.calID, item?.menuName, item?.totalCal)
+                        }
+                      >
+                        แก้ไข
+                      </Button>
+
+                      <Button
+                        danger
+                        type="primary"
+                        onClick={() => deletecalID(item?.calID)}
+                      >
+                        ลบ
+                      </Button>
+                    </div>
                   )}
                   {!btn && (
-                    <Button
-                      danger
-                      type="primary"
-                      onClick={() =>
-                        deleteCalId(item?.calculatorID)
-                      }
-                    >
-                      ลบ
-                    </Button>
+                   <div></div>
                   )}
                 </div>
               </React.Fragment>
@@ -48,4 +51,4 @@ const List = (props) => {
     </ListContainer>
   );
 };
-export default List;
+export default ManageOrder;

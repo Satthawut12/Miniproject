@@ -1,10 +1,11 @@
 import { Container } from "./styles";
-const Totalcal = () => {
+const Totalcal = (props) => {
+  const { totalCal } = props
   return (
     <Container>
     <div className="box-container">
         <div>จำนวนแคลอรี่ทั้งหมด</div>
-      <div className="cal">280 cal</div>
+      <div className="cal">{totalCal} cal</div>
     </div>
       
     </Container>

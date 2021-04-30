@@ -4,7 +4,7 @@ let users = {
   users: [
     {
       id: 1,
-      username: "satthawut pakjeen",
+      username: "Satthawut",
       password: "$2b$10$0AsMSQaUB0AlLnKzgeUOfOE.hWUodtuR4NOU954XLVy2gy3lBWsdO",
       email: "satthawut@gmail.com",
     },
@@ -24,14 +24,16 @@ let cals = {
 
 let calculators = {
   calculator: [
-    {
-      menuName: "ผัดเผ็ด",
-      totalCal: 70,
-    },
-    {
-      menuName: "ส้มตำ",
-      totalCal: 80,
-    }
+    // {
+    //   calculatorID: 1,
+    //   menuName: "ผัดเผ็ด",
+    //   totalCal: 70,
+    // },
+    // {
+    //   calculatorID: 2,
+    //   menuName: "ส้มตำ",
+    //   totalCal: 80,
+    // }
   ]
 } 
 
@@ -68,7 +70,7 @@ exports.addMenu = async (req, username) => {
   newData.calID = calID;
   newData.username = username;
   newData.menuName = menuName;
-  newData.totalCal = totalCal;
+  newData.totalCal = parseInt(totalCal);
   console.log(newData);
   cals = { cal: [...cals.cal, newData] };
   return cals
@@ -76,7 +78,6 @@ exports.addMenu = async (req, username) => {
 
 exports.findCalID = async () => {
   let lastIndex = await cals.cal.length;
-
   return cals.cal[lastIndex - 1].calID + 1;
 };
 
@@ -89,7 +90,7 @@ exports.editMenu = async (req) => {
     return false;
   }
   found.menuName = menuName;
-  found.totalCal = totalCal
+  found.totalCal = parseInt(totalCal)
   return found;
 };
 
@@ -106,19 +107,51 @@ exports.deletecalID = async (calID) => {
   return cals.cal;
 };
 
+exports.findcalculatorID = async () => {
+  let max = Math.max.apply(
+    Math,
+    calculators.calculator.map(function (o) {
+      return +o.calculatorID;
+    })
+  );
+  console.log(max);
+  if (max == "-Infinity") {
+    max = 1
+  }
+  return max + 1;
+};
+
 exports.addcalculator = async (req) => {
   const { menuName,totalCal } = req
+  let calculatorIDs = await this.findcalculatorID();
   let newData = {};
+  newData.calculatorID = calculatorIDs;
   newData.menuName = menuName;
-  newData.totalCal = totalCal;
+  newData.totalCal = parseInt(totalCal);
   console.log(newData);
   calculators = { calculator: [...calculators.calculator, newData] };
-  let totalcal = await this.calculator()
   return calculators
 }
 
 exports.calculator = async () => {
   let result = await calculators.calculator.reduce((prev, cur) => prev + cur.totalCal, 0)
-  console.log("total cal: ",result);
+  //console.log("total cal: ",result);
   return result
+}
+
+exports.deletecalculateID = async (calculatorID) => {
+  let found = await calculators.calculator.find(
+    (find) => find.calculatorID == calculatorID
+  );
+  if (!found) {
+    return false;
+  }
+  calculators.calculator = await calculators.calculator.filter(
+    (find) => find.calculatorID != calculatorID
+  );
+  return calculators.calculator
+};
+
+exports.getAllcalculate = async () => {
+  return calculators.calculator
 }
